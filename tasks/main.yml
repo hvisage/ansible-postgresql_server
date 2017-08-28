@@ -42,14 +42,21 @@
 - include: install_postgresql.yml
   tags: [ 'role::postgresql_server:packages' ]
 
-  
-- name: data_dir setting
+- name: Configure custom PostgreSQL data directory
   lineinfile:
-    path: /etc/postgresql-common/createcluster.conf
-    regexp: "data_directory"
-    line: "data_directory= '{{postgresql_server__data_directory}}/%v/%c'"
-  when: (postgresql_server__data_directory|d())
+    path: '/etc/postgresql-common/createcluster.conf'
+    regexp: '^data_directory\s+='
+    line: "data_directory = '{{ postgresql_server__data_directory }}/%v/%c'"
+  when: postgresql_server__data_directory != '/var/lib/postgresql'
 
+- name: Make sure that custom PostgreSQL data directory exists
+  file:
+    path: '{{ postgresql_server__data_directory }}'
+    state: 'directory'
+    owner: '{{ postgresql_server__user }}'
+    group: '{{ postgresql_server__group }}'
+    mode: '0755'
+  when: postgresql_server__data_directory != '/var/lib/postgresql'
 
 - name: Count number of currently configured clusters
   set_fact:
@@ -67,7 +74,7 @@
 - include: secure_installation.yml
 
 - include: manage_autopostgresqlbackup.yml
-  when: postgresql_server__autopostgresqlbackup|d() and postgresql_server__autopostgresqlbackup
+  when: postgresql_server__autopostgresqlbackup|bool
   tags: [ 'role::postgresql_server:auto_backup' ]
 
 - name: Make sure that Ansible local fact directory exists
@@ -93,4 +100,3 @@
   when: postgresql_server__register_local_facts|d() and
         postgresql_server__register_local_facts.changed
   tags: [ 'role::postgresql_server:config' ]
-
