@@ -19,6 +19,8 @@ The current role maintainer_ is drybjed_.
 Changed
 ~~~~~~~
 
+- Added max_parallel_workers_per_gather
+
 - Added the :envvar:`postgresql_server__data_directory` variable (defaults to
   the default :file:`/var/lib/postgresql` in Debian) to have a tunable when you
   need/want the default clusters to have a different data_dir base directory.
