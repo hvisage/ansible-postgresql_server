@@ -148,7 +148,7 @@ effective_io_concurrency = {{ item.effective_io_concurrency | d('1') }}
 {% if (item.version | d(postgresql_server__version)) | version_compare('9.4','>=') %}
 max_worker_processes = {{ item.max_worker_processes | d('8') }}
 {% endif %}
-{% if ((item.version | d(postgresql_server__version)) | version_compare('9.6','>=')
+{% if (item.version | d(postgresql_server__version)) | version_compare('9.6','>=') %}
 {%    if (item.max_parallel_workers_per_gather|d()) %}
 max_parallel_workers_per_gather = {{ item.max_parallel_workers_per_gather | item.max_worker_processesmax_parallel_workers_per_gather| d('8') }} #will only use at max max_worker_processes. Tune that also.
 {%    else %}
@@ -504,7 +504,7 @@ restart_after_crash = {{ item.restart_after_crash | d('on') }}
 #These inclusions can be enabled in the Debops by defining: include_dir, include_if_exists or include
 {% if item.include_dir|d() %}
 #include_dir definitions: (Will look for ''.conf' files in these:)
-{%    for incl_dir in item.include_dirs %}
+{%    for incl_dir in item.include_dir %}
 include_dir={{incl_dir}}
 {%    endfor %}
 {% else %}
@@ -519,7 +519,7 @@ include_if_exists={{incl_exist}}
 {% else %}
 #include_if_exists = 'exists.conf'      # include file only if it exists
 {% endif %}
-{% if item.include_dir|d() %}
+{% if item.include|d() %}
 #include definitions: (These will cause load failure if it doesn't exist)
 {%    for incl in item.include %}
 include={{incl}}
