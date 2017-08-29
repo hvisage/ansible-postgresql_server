@@ -501,32 +501,31 @@ restart_after_crash = {{ item.restart_after_crash | d('on') }}
 # These options allow settings to be loaded from files other than the
 # default postgresql.conf.
 
-{# H.Visage: I was contemplating to add an "enable_includes" option
-would help with the "default" message below.
-Any other advice to make changes I'll gladly merge on a PR ;) #}
-{% if not (item.include_dir|item.include_if_exists|item.include|d(false)) %}
 #These inclusions can be enabled in the Debops by defining: include_dir, include_if_exists or include
+{% if item.include_dir|d() %}
+#include_dir definitions: (Will look for ''.conf' files in these:)
+{%    for incl_dir in item.include_dirs %}
+include_dir={{incl_dir}}
+{%    endfor %}
+{% else %}
 #include_dir = 'conf.d'                 # include files ending in '.conf' from
                                         # directory 'conf.d'
-#include_if_exists = 'exists.conf'      # include file only if it exists
-#include = 'special.conf'               # include file
-{% else %}
-#include_dir definitions: (Will look for ''.conf' files in these:)
-{% for incl_dir in item.include_dirs %}
-include_dir={{incl_dir}}
-{% endfor %}
-
+{% endif %}
+{% if item.include_if_exists|d() %}
 #include_if_exists definitions: (Should not fail if it doesn't exist)
-{% for incl_exist in item.include_if_exists %}
+{%    for incl_exist in item.include_if_exists %}
 include_if_exists={{incl_exist}}
-{% endfor %}
-
+{%    endfor %}
+{% else %}
+#include_if_exists = 'exists.conf'      # include file only if it exists
+{% endif %}
+{% if item.include_dir|d() %}
 #include definitions: (These will cause load failure if it doesn't exist)
-{% for incl in item.include %}
+{%    for incl in item.include %}
 include={{incl}}
-{% endfor %}
-
-
+{%    endfor %}
+{% else %}
+#include = 'special.conf'               # include file
 {% endif %}
 
 #------------------------------------------------------------------------------
