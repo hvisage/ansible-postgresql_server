@@ -18,6 +18,7 @@ The current role maintainer_ is drybjed_.
 
 Changed
 ~~~~~~~
+- Added include/include_dir/include_if_exist logic 
 
 - Added max_parallel_workers_per_gather
 

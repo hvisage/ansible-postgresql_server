@@ -336,3 +336,9 @@ entry:
 ``allow``
   List of IP addresses or CIDR subnets which should be allowed to connect to
   a given cluster.
+
+
+``include`` ``include_dir`` ``include_if_exists``
+  These are arrays that'll be looped over to add the needed pointers to extra
+  include files. This is the easiest method to add extra (non-Debops controlled)
+  parameters (like those for the auto_explain module)
