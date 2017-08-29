@@ -533,3 +533,10 @@ include={{incl}}
 #------------------------------------------------------------------------------
 
 # Add settings for extensions here
+
+
+# in debops.postgresql_server role: use raw_append in the cluster specific
+# config to append here raw config:
+{% if item.raw_append|d() %}
+{{item.raw_append}}
+{% endif %}
