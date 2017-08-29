@@ -18,9 +18,11 @@ The current role maintainer_ is drybjed_.
 
 Changed
 ~~~~~~~
-- Added include/include_dir/include_if_exist logic 
+- Consistency change for max_worker_processes [hvisage]
 
-- Added max_parallel_workers_per_gather
+- Added include/include_dir/include_if_exist logic [hvisage]
+
+- Added max_parallel_workers_per_gather [hvisage]
 
 - Added the :envvar:`postgresql_server__data_directory` variable (defaults to
   the default :file:`/var/lib/postgresql` in Debian) to have a tunable when you
