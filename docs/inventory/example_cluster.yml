@@ -1,0 +1,39 @@
+---
+#"{{DB_mount}}/{{DB_name}}" These are defined by the other inventory data
+postgresql_server__data_directory: "{{DB_mount}}/{{DB_name}}"
+
+pg_tracs_cluster:
+  # {{EnvCode}} is defined for the environment in this case, like Prod, Dev, QA
+  name: 'application{{EnvCode}}01'
+  port: '5432'
+  start_conf: 'auto'
+  wal_level: 'hot_standby'
+  #This is defined by the "default" postgresql_server__data_directory,
+  #but to override:
+  # data_directory: "{{DB_mount}}/{{DB_name}}"
+  #Still busy tweaking stuff:
+  wal_log_hints: on
+  #I have ZFS+SSD based:
+  random_page_cost: '1.1'
+  #I have a bunch of RAM for this VM:
+  effective_cache_size: "8GB"
+  shared_buffers: 2GB
+  max_prepared_transactions: 10
+  work_mem: 1GB
+  maintenance_work_mem: 1GB
+  #I want logging to here:
+  logging_collector: "on"
+  log_directory: "'/pglogs'"
+  log_filename: "'postgresql-%Y-%m-%d_%H%M%S.log'"
+  log_truncate_on_rotation: "off"
+  log_rotation_age: "1d"
+  log_rotation_size: "1GB"
+
+  log_min_duration_statement: "1s"
+  log_checkpoints: "on"
+  log_lock_waits: "on"
+  track_activity_query_size: 8192
+  max_worker_processes: 8
+  max_parallel_workers_per_gather: 7
+  include_dir: ['conf_tracs']
+  include_if_exists: ['auto_explain.conf']

@@ -10,6 +10,7 @@ Ansible role: debops.postgresql_server
    getting-started
    defaults
    defaults-detailed
+   example-cluster
    copyright
    changelog
 
