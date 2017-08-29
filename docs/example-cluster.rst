@@ -1,5 +1,5 @@
 Example Cluster config
 ======================
 
-.. literalinclude:: inventory/example_cluster.yml
+.. literalinclude:: examples/example_cluster.yml
    :language: yaml
